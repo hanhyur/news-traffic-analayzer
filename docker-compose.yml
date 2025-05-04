@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2 # Kafka 버전에 맞는 Zookeeper 선택
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2 # 사용할 Kafka 버전 선택
+    container_name: kafka
+    ports:
+      - "9092:9092" # 내부 접근용
+      - "29092:29092" # 외부(호스트) 접근용
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092 # 호스트에서 접근 가능하도록 설정
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+  redis:
+    image: redis:7.0-alpine # 사용할 Redis 버전 선택
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes # 데이터 영속성 옵션 (선택 사항)
+
+  postgres:
+    image: postgres:15-alpine # 사용할 PostgreSQL 버전 선택
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: news_traffic_db # 사용할 DB 이름
+      POSTGRES_USER: user # DB 사용자 이름
+      POSTGRES_PASSWORD: password # DB 비밀번호
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # 데이터 유지를 위한 볼륨
+
+volumes:
+  postgres_data:
