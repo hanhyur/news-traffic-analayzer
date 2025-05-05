@@ -1,11 +1,11 @@
-# 📰 뉴스 트래픽 분석 시스템
+# 뉴스 트래픽 분석 시스템
 
 > Kafka + Redis 기반 실시간 뉴스 트래픽 수집 및 분석 플랫폼  
 > 클린 아키텍처 · DDD · TDD 기반으로 설계된 사이드 프로젝트
 
 ---
 
-## ✅ 주요 기능
+## 주요 기능
 
 -  기사 클릭, 좋아요 등 사용자 활동 수집 API
 -  Kafka를 활용한 비동기 이벤트 처리 구조
@@ -15,7 +15,7 @@
 
 ---
 
-## 🧱 기술 스택
+## 기술 스택
 
 | 범주 | 기술 |
 |------|------|
@@ -30,7 +30,7 @@
 
 ---
 
-## 🧩 시스템 아키텍처
+## 시스템 아키텍처
 
 ```plaintext
 [Client] → [Spring Web API] → [Kafka Producer] → Kafka Topic
@@ -44,7 +44,7 @@
 
 ---
 
-## 🗂️ 폴더 구조
+## 폴더 구조
 
 ```scss
 src
@@ -66,9 +66,9 @@ src
 
 ---
 
-## 🔬 API 예시
+## API 예시
 
-### 📥 트래픽 수집
+### 트래픽 수집
 
 `POST /api/v1/traffic`
 
@@ -79,7 +79,7 @@ src
 }
 ```
 
-### 📤 통계 조회
+### 통계 조회
 
 `GET /api/v1/stats/1234`
 
@@ -91,13 +91,13 @@ src
 }
 ```
 
-## 🧪 테스트
+## 테스트
 
 -  단위 테스트 : UseCase, Domain, Repository
 -  통합 테스트 : Kafka → Redis 흐름 검증
 -  테스트 도구 : JUnit5, Mockito, Testcontainers
 
-## 🚀 실행 방법
+## 실행 방법
 
 ```bash
 # Kafka / Redis / Postgres 실행
@@ -107,7 +107,7 @@ docker-compose up -d
 ./gradlew bootRun
 ```
 
-## 🧠 확장 아이디어
+## 확장 아이디어
 
 -  뉴스 크롤링 및 기사 등록 자동화
 -  사용자 세션 기반 추천 알고리즘
