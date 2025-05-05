@@ -41,10 +41,13 @@ spring:
         spring:
           json:
             trusted:
-              packages: "com.example.newstrafficanalyzer.domain.traffic.model"
+              packages: "me.hanhyur.newstrafficanalyzer.domain.traffic.model"
             use:
               type:
                 headers: false
+            value:
+              default:
+                type: me.hanhyur.newstrafficanalyzer.domain.traffic.model.TrafficEvent
       auto-offset-reset: earliest
 
 springdoc:
@@ -58,3 +61,8 @@ springdoc:
 app:
   kafka:
     topic: news.traffic.topic
+
+logging:
+  level:
+    root: INFO
+    me.hanhyur.newstrafficanalyzer: DEBUG

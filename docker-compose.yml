@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.2 # Kafka 버전에 맞는 Zookeeper 선택
+    image: confluentinc/cp-zookeeper:7.5.3
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -11,7 +9,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:7.3.2 # 사용할 Kafka 버전 선택
+    image: confluentinc/cp-kafka:7.5.3
     container_name: kafka
     ports:
       - "9092:9092" # 내부 접근용
@@ -28,14 +26,14 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   redis:
-    image: redis:7.0-alpine # 사용할 Redis 버전 선택
+    image: redis:7.2.4
     container_name: redis
     ports:
       - "6379:6379"
     command: redis-server --appendonly yes # 데이터 영속성 옵션 (선택 사항)
 
   postgres:
-    image: postgres:15-alpine # 사용할 PostgreSQL 버전 선택
+    image: postgres:15.6
     container_name: postgres
     ports:
       - "5432:5432"
