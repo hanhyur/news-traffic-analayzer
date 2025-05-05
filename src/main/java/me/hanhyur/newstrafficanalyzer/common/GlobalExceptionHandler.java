@@ -20,18 +20,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
         log.warn("handleMethodArgumentNotValidException: {}", ex.getMessage());
 
-        List<ApiErrorResponse.FieldErrorDetail> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> new ApiErrorResponse.FieldErrorDetail(
+        List<ErrorResponse.FieldErrorDetail> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new ErrorResponse.FieldErrorDetail(
                         fieldError.getField(),
                         fieldError.getRejectedValue(),
                         fieldError.getDefaultMessage()))
                 .toList();
 
-        ApiErrorResponse errorResponse = new ApiErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST,
                 "입력 값 유효성 검사에 실패했습니다.",
                 request.getRequestURI(),
@@ -43,18 +43,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseEntity<ApiErrorResponse> handleBindException(
+    protected ResponseEntity<ErrorResponse> handleBindException(
             BindException ex, HttpServletRequest request) {
         log.warn("handleBindException: {}", ex.getMessage());
 
-        List<ApiErrorResponse.FieldErrorDetail> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> new ApiErrorResponse.FieldErrorDetail(
+        List<ErrorResponse.FieldErrorDetail> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new ErrorResponse.FieldErrorDetail(
                         fieldError.getField(),
                         fieldError.getRejectedValue(),
                         fieldError.getDefaultMessage()))
                 .toList();
 
-        ApiErrorResponse errorResponse = new ApiErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST,
                 "입력 값 바인딩 중 유효성 검사에 실패했습니다.",
                 request.getRequestURI(),
@@ -66,27 +66,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatch(
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
         log.warn("handleMethodArgumentTypeMismatchException: {} - Parameter: {}, RequiredType: {}",
                 ex.getMessage(), ex.getName(), ex.getRequiredType());
 
-        ApiErrorResponse errorResponse = new ApiErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST,
                 "요청 파라미터의 타입이 잘못되었습니다. (" + ex.getName() + " 파라미터)",
                 request.getRequestURI()
         );
-        
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    protected ResponseEntity<ApiErrorResponse> handleHttpRequestMethodNotSupported(
+    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupported(
             HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
         log.warn("handleHttpRequestMethodNotSupportedException: {}", ex.getMessage());
 
-        ApiErrorResponse errorResponse = new ApiErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.METHOD_NOT_ALLOWED,
                 "지원하지 않는 HTTP 메서드입니다.",
                 request.getRequestURI()
@@ -97,10 +97,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ResponseEntity<ApiErrorResponse> handleException(Exception ex, HttpServletRequest request) {
+    protected ResponseEntity<ErrorResponse> handleException(Exception ex, HttpServletRequest request) {
         log.error("Unhandled Exception: ", ex);
 
-        ApiErrorResponse errorResponse = new ApiErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "서버 내부 오류가 발생했습니다. 관리자에게 문의하세요.",
                 request.getRequestURI()

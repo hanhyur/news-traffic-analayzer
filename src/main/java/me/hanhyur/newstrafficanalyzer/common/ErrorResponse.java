@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class ApiErrorResponse {
+public class ErrorResponse {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime timestamp;
@@ -18,7 +18,7 @@ public class ApiErrorResponse {
     private final String path;
     private List<FieldErrorDetail> fieldErrors;
 
-    public ApiErrorResponse(HttpStatus status, String message, String path) {
+    public ErrorResponse(HttpStatus status, String message, String path) {
         this.timestamp = LocalDateTime.now();
         this.status = status.value();
         this.error = status.getReasonPhrase();
@@ -26,7 +26,7 @@ public class ApiErrorResponse {
         this.path = path;
     }
 
-    public ApiErrorResponse(HttpStatus status, String message, String path, List<FieldErrorDetail> fieldErrors) {
+    public ErrorResponse(HttpStatus status, String message, String path, List<FieldErrorDetail> fieldErrors) {
         this(status, message, path);
         this.fieldErrors = fieldErrors;
     }
